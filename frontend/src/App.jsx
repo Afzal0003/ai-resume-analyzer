@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import "./index.css";
 
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://127.0.0.1:8000";
+
 function App() {
   const [apiMessage, setApiMessage] = useState("Checking backend...");
   const [apiStatus, setApiStatus] = useState("pending");
@@ -18,7 +21,7 @@ function App() {
   useEffect(() => {
     const fetchHealth = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/");
+        const response = await fetch(`${API_BASE_URL}/`);
         const data = await response.json();
         setApiMessage(data.message);
         setApiStatus("success");
@@ -34,7 +37,7 @@ function App() {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const response = await fetch("http://127.0.0.1:8000/analysis/history");
+        const response = await fetch(`${API_BASE_URL}/analysis/history`);
         const data = await response.json();
         setHistory(data);
       } catch (error) {
@@ -66,7 +69,7 @@ function App() {
       setUploadStatus("loading");
       setUploadMessage("Uploading and extracting text...");
 
-      const response = await fetch("http://127.0.0.1:8000/resume/extract", {
+      const response = await fetch(`${API_BASE_URL}/resume/extract`, {
         method: "POST",
         body: formData,
       });
@@ -100,7 +103,7 @@ function App() {
     try {
       setAnalysisMessage("Sending resume and job description to backend...");
 
-      const response = await fetch("http://127.0.0.1:8000/analysis/preview", {
+      const response = await fetch(`${API_BASE_URL}/analysis/preview`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -140,7 +143,7 @@ function App() {
       setAnalysisResult(null);
       setAnalysisMessage("Running Gemini analysis...");
 
-      const response = await fetch("http://127.0.0.1:8000/analysis/run", {
+      const response = await fetch(`${API_BASE_URL}/analysis/run`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
